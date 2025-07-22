@@ -1,58 +1,107 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>نتيجة الطالب</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Cairo', sans-serif;
       text-align: center;
-      margin: 50px 20px;
-      background-color: #f8f9fa;
+      padding: 50px 20px;
+      margin: 0;
+      background-color: #f0f2f5;
+    }
+
+    h1 {
+      color: #555;
     }
 
     h2 {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
+      font-size: 28px;
+      color: #333;
+    }
+
+    .subtitle {
+      color: #777;
+      margin-bottom: 30px;
+      font-size: 16px;
     }
 
     .input-group {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
 
     input {
-      padding: 10px;
+      padding: 12px;
       width: 100%;
-      max-width: 300px;
+      max-width: 350px;
       font-size: 16px;
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
     }
 
     button {
-      padding: 10px 25px;
+      padding: 12px 30px;
       font-size: 16px;
-      background-color: #007bff;
+      background-color: #28a745;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
     }
 
     button:hover {
-      background-color: #0056b3;
+      background-color: #218838;
     }
 
     #result {
       margin-top: 30px;
-      font-size: 18px;
-      background: #fff;
-      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .loader {
+      padding: 10px;
+      color: #007bff;
+      font-weight: bold;
+      animation: blink 1s linear infinite;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    .student-result {
+      background-color: #fff;
+      border: 2px solid #4caf50;
+      padding: 20px;
+      margin: 15px auto;
       border-radius: 10px;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 90%;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: 0.3s ease;
+    }
+
+    .student-result:hover {
+      transform: scale(1.02);
+      background-color: #f3fff3;
+    }
+
+    .student-result p {
+      margin: 5px 0;
+      font-size: 17px;
+      color: #333;
     }
 
     @media (max-width: 600px) {
@@ -60,22 +109,26 @@
         width: 100%;
         max-width: none;
       }
+
+      .student-result {
+        font-size: 15px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h1> Designed by waheed salah </h1>
-  <h2>استعلام عن النتيجة </h2>
+  <p style="font-size: 18px; color: #e91e63; font-weight: bold;">📿 صلِّ على النبي - صلى الله عليه وسلم</p>
+  <h1>Created by Waheed Salah</h1>
+  <h2>استعلام عن النتيجة</h2>
 
   <div class="input-group">
-    <input type="text" id="searchInput" placeholder="ادخل رقم الجلوس أو الاسم">
-  </div>
-  <button onclick="searchResult()">بحث</button>
-  <div id="loading" style="display: none; margin-top: 20px;">
-  ⏳ جارٍ التحميل...
+    <input type="text" id="searchInput" placeholder="ادخل رقم الجلوس أو الاسم" />
   </div>
 
+  <button onclick="searchResult()">بحث</button>
+
+  <div id="loading" style="display: none; margin-top: 20px;">⏳ جارٍ التحميل...</div>
 
   <div id="result"></div>
 

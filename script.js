@@ -109,6 +109,9 @@ async function searchResult() {
     return;
   }
 
+  // 👇 عرض رسالة تحميل أو أنيميشن
+  resultDiv.innerHTML = `<div class="loader">جاري البحث عن النتيجة...</div>`;
+
   try {
     const response = await fetch(
       "https://raw.githubusercontent.com/WaheedSALAH/natiga/main/results.json"
@@ -117,7 +120,6 @@ async function searchResult() {
 
     const data = await response.json();
 
-    // بحث عن كل النتائج التي تطابق رقم الجلوس أو تحتوي الاسم المدخل
     const matchingStudents = data.filter(
       item =>
         item.seating_no.toString() === input ||
@@ -128,10 +130,12 @@ async function searchResult() {
       let resultsHTML = "<h3>النتائج:</h3>";
       matchingStudents.forEach(student => {
         resultsHTML += `
-          <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+          <div class="student-result">
             <p><strong>رقم الجلوس:</strong> ${student.seating_no}</p>
             <p><strong>الاسم:</strong> ${student.arabic_name}</p>
             <p><strong>المجموع الكلي:</strong> ${student.total_degree}</p>
+            <p><strong>النسبة المئوية:</strong> ${(student.total_degree / 320 * 100).toFixed(2)}%</p>
+
           </div>
         `;
       });
