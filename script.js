@@ -100,7 +100,6 @@
 //   }
 // }
 //#######################################
-
 async function searchResult() {
   const input = document.getElementById("searchInput").value.trim();
   const resultDiv = document.getElementById("result");
@@ -110,12 +109,6 @@ async function searchResult() {
     return;
   }
 
-  // 👇 عرض رسالة جاري البحث
-  resultDiv.innerHTML = "<p style='color:blue;'>جاري البحث...</p>";
-
-  // ✅ ندي فرصة للمتصفح يعرض الرسالة قبل بدء التحميل
-  await new Promise(resolve => setTimeout(resolve, 100));
-
   try {
     const response = await fetch(
       "https://raw.githubusercontent.com/WaheedSALAH/natiga/main/results.json"
@@ -124,23 +117,76 @@ async function searchResult() {
 
     const data = await response.json();
 
-    const student = data.find(
+    // بحث عن كل النتائج التي تطابق رقم الجلوس أو تحتوي الاسم المدخل
+    const matchingStudents = data.filter(
       item =>
         item.seating_no.toString() === input ||
         item.arabic_name.includes(input)
     );
 
-    if (student) {
-      resultDiv.innerHTML = `
-        <p><strong>رقم الجلوس:</strong> ${student.seating_no}</p>
-        <p><strong>الاسم:</strong> ${student.arabic_name}</p>
-        <p><strong>المجموع الكلي:</strong> ${student.total_degree}</p>
-      `;
+    if (matchingStudents.length > 0) {
+      let resultsHTML = "<h3>النتائج:</h3>";
+      matchingStudents.forEach(student => {
+        resultsHTML += `
+          <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+            <p><strong>رقم الجلوس:</strong> ${student.seating_no}</p>
+            <p><strong>الاسم:</strong> ${student.arabic_name}</p>
+            <p><strong>المجموع الكلي:</strong> ${student.total_degree}</p>
+          </div>
+        `;
+      });
+      resultDiv.innerHTML = resultsHTML;
     } else {
-      resultDiv.innerHTML = "<p style='color:red;'>لم يتم العثور على الطالب</p>";
+      resultDiv.innerHTML = "<p style='color:red;'>لم يتم العثور على أي طالب مطابق</p>";
     }
   } catch (err) {
     console.error(err);
     resultDiv.innerHTML = "<p style='color:red;'>حدث خطأ أثناء جلب البيانات</p>";
   }
 }
+
+//###############################
+
+// async function searchResult() {
+//   const input = document.getElementById("searchInput").value.trim();
+//   const resultDiv = document.getElementById("result");
+
+//   if (!input) {
+//     resultDiv.innerHTML = "<p style='color:red;'>من فضلك أدخل رقم الجلوس أو الاسم</p>";
+//     return;
+//   }
+
+//   // 👇 عرض رسالة جاري البحث
+//   resultDiv.innerHTML = "<p style='color:blue;'>جاري البحث...</p>";
+
+//   // ✅ ندي فرصة للمتصفح يعرض الرسالة قبل بدء التحميل
+//   await new Promise(resolve => setTimeout(resolve, 100));
+
+//   try {
+//     const response = await fetch(
+//       "https://raw.githubusercontent.com/WaheedSALAH/natiga/main/results.json"
+//     );
+//     if (!response.ok) throw new Error("فشل تحميل البيانات");
+
+//     const data = await response.json();
+
+//     const student = data.find(
+//       item =>
+//         item.seating_no.toString() === input ||
+//         item.arabic_name.includes(input)
+//     );
+
+//     if (student) {
+//       resultDiv.innerHTML = `
+//         <p><strong>رقم الجلوس:</strong> ${student.seating_no}</p>
+//         <p><strong>الاسم:</strong> ${student.arabic_name}</p>
+//         <p><strong>المجموع الكلي:</strong> ${student.total_degree}</p>
+//       `;
+//     } else {
+//       resultDiv.innerHTML = "<p style='color:red;'>لم يتم العثور على الطالب</p>";
+//     }
+//   } catch (err) {
+//     console.error(err);
+//     resultDiv.innerHTML = "<p style='color:red;'>حدث خطأ أثناء جلب البيانات</p>";
+//   }
+// }
