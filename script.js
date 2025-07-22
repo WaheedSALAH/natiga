@@ -10,14 +10,19 @@ function searchResult() {
   const resultDiv = document.getElementById('result');
 
   if (!input) {
-    resultDiv.innerHTML = "<p style='color:red;'>من فضلك أدخل رقم الجلوس</p>";
+    resultDiv.innerHTML = "<p style='color:red;'>من فضلك أدخل رقم الجلوس أو الاسم</p>";
     return;
   }
 
-  const student = data.find(item => item.seating_no.toString() === input);
+  // البحث برقم الجلوس أو الاسم
+  const student = data.find(item =>
+    item.seating_no.toString() === input || 
+    item.arabic_name.trim().includes(input)
+  );
 
   if (student) {
     resultDiv.innerHTML = `
+      <p><strong>رقم الجلوس:</strong> ${student.seating_no}</p>
       <p><strong>الاسم:</strong> ${student.arabic_name}</p>
       <p><strong>المجموع الكلي:</strong> ${student.total_degree}</p>
     `;
